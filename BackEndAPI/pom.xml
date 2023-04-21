@@ -7,7 +7,6 @@
         <artifactId>CoreSystem</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.example</groupId>
     <artifactId>BackEndAPI</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEndAPI</name>
