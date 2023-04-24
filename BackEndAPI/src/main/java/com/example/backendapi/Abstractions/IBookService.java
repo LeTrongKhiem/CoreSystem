@@ -1,5 +1,8 @@
 package com.example.backendapi.Abstractions;
 
-public interface IBookService {
+import com.example.backendapi.Model.Book;
+import com.example.backendapi.ModelMapping.BookModel;
 
+public interface IBookService {
+    boolean postBook(BookModel book);
 }

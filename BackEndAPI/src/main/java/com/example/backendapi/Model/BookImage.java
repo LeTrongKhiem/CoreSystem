@@ -10,6 +10,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +26,7 @@ public class BookImage implements Serializable {
     @Column(columnDefinition = "uniqueidentifier")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
-    private String createdDate;
+    private Date createdDate;
     private String image;
     @ManyToOne
     @JoinColumn(name = "book_id")
