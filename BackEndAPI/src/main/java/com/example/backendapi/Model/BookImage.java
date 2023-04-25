@@ -23,7 +23,7 @@ public class BookImage implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(columnDefinition = "uniqueidentifier")
+    @Column(columnDefinition = "VARCHAR(36)")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     private Date createdDate;

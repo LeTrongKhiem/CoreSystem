@@ -25,7 +25,7 @@ public class Book implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(columnDefinition = "uniqueidentifier")
+    @Column(columnDefinition = "VARCHAR(36)")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     private String name;
@@ -33,5 +33,5 @@ public class Book implements Serializable {
     private Date createdDate;
     private String description;
     @OneToMany(mappedBy = "book")
-    private Set<BookImage> productImages;
+    private Set<BookImage> bookImages;
 }
