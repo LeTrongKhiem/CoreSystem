@@ -32,6 +32,8 @@ public class Book implements Serializable {
     private String author;
     private Date createdDate;
     private String description;
+    private boolean isExchange;
+    private String contactPhone;
     @OneToMany(mappedBy = "book")
     private Set<BookImage> bookImages;
 }

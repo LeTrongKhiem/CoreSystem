@@ -26,7 +26,6 @@ public class FileStorageService implements IFileStorageService {
     public void init() {
         try {
             Files.createDirectories(root);
-            Files.createDirectories(categoryFile);
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
