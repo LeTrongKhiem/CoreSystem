@@ -3,6 +3,7 @@ import './App.css';
 import "./assets/boxicons-2.0.7/css/boxicons.min.css";
 import "./assets/css/grid.css";
 import "./assets/css/index.css";
+import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AddBookExchange} from "./pages";
 import {ToastContainer} from "react-toastify";
@@ -13,7 +14,7 @@ function App() {
                       <div className="layout__content">
                         <div className="layout__content-main">
                           <Routes>
-                            <Route path="/add-book" element={<AddBookExchange/>}/>
+                            <Route path="/post-book" element={<AddBookExchange/>}/>
                           </Routes>
                         </div>
                       </div>

@@ -5,12 +5,13 @@ import {FastField, Form, Formik} from "formik";
 import InputField from "../custom-fields/InputField";
 import './addBookExchange.css'
 import {toast} from "react-toastify";
+import axios from "axios";
 
 const AddBookExchange = () => {
     const initialValues = {
         name: '',
         author: '',
-        images: '',
+        productImages: '',
         imagesPreview: '',
         description: '',
 
@@ -19,7 +20,7 @@ const AddBookExchange = () => {
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Vui lòng nhập tên sách'),
         author: Yup.string().required('Vui lòng nhập tên tác giả'),
-        images: Yup.mixed().required('Vui lòng chọn hình ảnh'),
+        productImages: Yup.mixed().required('Vui lòng chọn hình ảnh'),
         description: Yup.string().required('Vui lòng nhập mô tả'),
     });
 
@@ -29,20 +30,19 @@ const AddBookExchange = () => {
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('author', values.author);
-        formData.append('images', values.images);
+        formData.append('productImages', values.productImages);
         formData.append('description', values.description);
-        const response = await fetch('http://localhost:8080/api/bookExchange', {
-            method: 'POST',
-            body: formData
-        });
-        if(response.status === 200) {
-            navigate('/bookExchange');
-            toast.success('Thêm sách thành công');
-        }
-        else {
-            toast.error('Thêm sách thất bại');
-        }
-        const result = await response.json();
+       const response = await  axios.post('http://localhost:7070/api/books/post', formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+       });
+         if (response.status === 200) {
+                toast.success('Thêm sách thành công');
+                navigate('/');
+         } else {
+                toast.error('Thêm sách thất bại');
+         }
     }
     return (
         <div>
@@ -96,14 +96,14 @@ const AddBookExchange = () => {
                                             </div>
                                             <div className="col-12">
                                                 <div className="form-group">
-                                                    <label htmlFor="images">Hình ảnh</label>
+                                                    <label htmlFor="productImages">Hình ảnh</label>
                                                     <input
-                                                        name="images"
+                                                        name="productImages"
                                                         type="file"
                                                         className="form-control"
                                                         onChange={(event) => {
                                                            const file = event.target.files[0];
-                                                           setFieldValue('images', file);
+                                                           setFieldValue('productImages', file);
                                                            setFieldValue('imagesPreview', URL.createObjectURL(file));
                                                         }
                                                         }
