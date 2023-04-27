@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.List;
@@ -30,16 +31,38 @@ public class BookService implements IBookService {
     @Override
     public boolean postBook(BookModel bookModel) {
         Book book = new Book();
+        UUID id = UUID.randomUUID();
         if (book != null) {
-            book.setId(UUID.randomUUID());
+            book.setId(id);
             book.setCreatedDate(new Date(System.currentTimeMillis()));
-            if (bookModel.getProductImages() != null) {
-                addImage(book.getId(), bookModel.getProductImages());
-            }
+            book.setAuthor(bookModel.getAuthor());
+            book.setDescription(bookModel.getDescription());
+            book.setName(bookModel.getName());
+            book.setContactPhone(bookModel.getContactPhone());
+            book.setExchange(false);
             bookRepository.save(book);
+            if (bookModel.getProductImages() != null) {
+                addImageBook(id, bookModel.getProductImages());
+            }
             return true;
         }
         return false;
+    }
+
+    private void addImageBook(UUID bookId, List<MultipartFile> productImage) {
+        Book product = bookRepository.findById(bookId).get();
+        if (productImage == null) {
+            return;
+        }
+        for (MultipartFile file : productImage) {
+            String path = fileStorageService.saveImage(file);
+            BookImage bookImage = new BookImage();
+            bookImage.setBook(product);
+            bookImage.setImage(path);
+            bookImage.setCreatedDate(new Date(System.currentTimeMillis()));
+            bookImage.setId(UUID.randomUUID());
+            bookImageRepository.save(bookImage);
+        }
     }
 
     public void addImage(UUID bookId, List<PartFileModel> productImage) {
