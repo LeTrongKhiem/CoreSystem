@@ -30,7 +30,10 @@ const AddBookExchange = () => {
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('author', values.author);
-        formData.append('productImages', values.productImages);
+       const images  = values.productImages;
+         for (let i = 0; i < images.length; i++) {
+                formData.append('productImages', images[i]);
+         }
         formData.append('description', values.description);
        const response = await  axios.post('http://localhost:7070/api/books/post', formData,{
             headers: {
@@ -101,18 +104,40 @@ const AddBookExchange = () => {
                                                         name="productImages"
                                                         type="file"
                                                         className="form-control"
+                                                        multiple={true}
                                                         onChange={(event) => {
-                                                           const file = event.target.files[0];
-                                                           setFieldValue('productImages', file);
-                                                           setFieldValue('imagesPreview', URL.createObjectURL(file));
+                                                            const files = event.target.files;
+                                                            let imagesPreview = '';
+                                                            for (let i = 0; i < files.length; i++) {
+                                                                imagesPreview += URL.createObjectURL(files[i]) + ' ';
+                                                            }
+                                                            setFieldValue('productImages', files);
+                                                            setFieldValue('imagesPreview', imagesPreview);
                                                         }
                                                         }
                                                     />
-                                                    {values.imagesPreview && (
-                                                        <img src={values.imagesPreview} alt="Ảnh xem trước"
-                                                             style={{height: '200px',margin: '10px'}}
-                                                        />
-                                                    )}
+                                                    {
+                                                        values.imagesPreview && (
+                                                            <div className="row">
+                                                                <div className="col-12">
+                                                                    <div className="form-group">
+                                                                        <label htmlFor="imagesPreview">Hình ảnh</label>
+                                                                        <div className="row">
+                                                                            {
+                                                                                values.imagesPreview.split(' ').map((image, index) => (
+                                                                                    <div className="col-2" key={index}>
+                                                                                        <img src={image} alt="" className="img-fluid" style={{
+                                                                                            width: '100px',
+                                                                                        }}/>
+                                                                                    </div>
+                                                                                ))
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
 
                                                 </div>
                                             </div>
