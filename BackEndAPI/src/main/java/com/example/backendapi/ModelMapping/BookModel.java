@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class BookModel {
+    private UUID id;
     private String name;
     private String author;
     private Date createdDate;
