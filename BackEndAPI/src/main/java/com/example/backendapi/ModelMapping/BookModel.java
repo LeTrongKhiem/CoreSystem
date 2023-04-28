@@ -18,4 +18,5 @@ public class BookModel {
     private String description;
     private String contactPhone;
     List<MultipartFile> productImages;
+    List<String> productImagesUrl;
 }

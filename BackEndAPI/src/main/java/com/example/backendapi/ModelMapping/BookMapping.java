@@ -23,6 +23,7 @@ public class BookMapping {
         model.setCreatedDate(book.getCreatedDate());
         model.setDescription(book.getDescription());
         model.setContactPhone(book.getContactPhone());
+        model.setProductImagesUrl(book.getBookImages().stream().map(x -> x.getImage()).toList());
         return model;
     }
 
