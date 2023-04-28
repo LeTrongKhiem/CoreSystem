@@ -18,6 +18,7 @@ public class BookMapping {
 
     public static BookModel toBook(Book book) {
         BookModel model = new BookModel();
+        model.setId(book.getId());
         model.setName(book.getName());
         model.setAuthor(book.getAuthor());
         model.setCreatedDate(book.getCreatedDate());
