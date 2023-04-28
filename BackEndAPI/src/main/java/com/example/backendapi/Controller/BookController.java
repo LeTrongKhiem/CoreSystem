@@ -6,6 +6,8 @@ import com.example.backendapi.Extensions.FileUploadModelConverter;
 import com.example.backendapi.Model.Book;
 import com.example.backendapi.Model.PartFileModel;
 import com.example.backendapi.ModelMapping.BookModel;
+import com.example.backendapi.ModelMapping.PagingModel;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +29,20 @@ public class BookController {
     public ResponseEntity<Boolean> post(@ModelAttribute BookModel book) {
         boolean result = bookService.postBook(book);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<PagingModel<BookModel>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int pageSize,
+                                                         @RequestParam(defaultValue = "") String search,
+                                                         @RequestParam(defaultValue = "name") String sortBy,
+                                                         @RequestParam(defaultValue = "asc") String sortType,
+                                                         @RequestParam(defaultValue = "false") String mostRecent) {
+        try {
+            PagingModel<BookModel> books = bookService.getAllBook(search, page, pageSize, sortType, sortBy, mostRecent);
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
