@@ -37,7 +37,7 @@ public class BookController {
                                                          @RequestParam(defaultValue = "") String search,
                                                          @RequestParam(defaultValue = "name") String sortBy,
                                                          @RequestParam(defaultValue = "asc") String sortType,
-                                                         @RequestParam(defaultValue = "false") String mostRecent) {
+                                                         @RequestParam(defaultValue = "desc") String mostRecent) {
         try {
             PagingModel<BookModel> books = bookService.getAllBook(search, page, pageSize, sortType, sortBy, mostRecent);
             return new ResponseEntity<>(books, HttpStatus.OK);

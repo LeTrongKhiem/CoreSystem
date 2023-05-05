@@ -69,7 +69,7 @@ public class BookService implements IBookService {
                                     product.getAuthor().toLowerCase().contains(keyword.toLowerCase()))
                     .toList();
         }
-        if (mostRecent.equals("true")) {
+        if (mostRecent.equals("asc")) {
             listProducts.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
         }
         final int start = (int)pageable.getOffset();
