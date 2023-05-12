@@ -5,6 +5,7 @@ import com.example.backendapi.Abstractions.IFileStorageService;
 import com.example.backendapi.Extensions.FileUploadModelConverter;
 import com.example.backendapi.Model.Book;
 import com.example.backendapi.Model.PartFileModel;
+import com.example.backendapi.ModelMapping.BookMapping;
 import com.example.backendapi.ModelMapping.BookModel;
 import com.example.backendapi.ModelMapping.PagingModel;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/books")
@@ -24,6 +26,8 @@ public class BookController {
     private IBookService bookService;
     @Autowired
     private IFileStorageService fileStorageService;
+
+
 
     @PostMapping("/post")
     public ResponseEntity<Boolean> post(@ModelAttribute BookModel book) {
@@ -44,5 +48,9 @@ public class BookController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/{id}")
+    public BookModel getBookByID(@PathVariable UUID id){
+        return bookService.getBookByID(id);
     }
 }

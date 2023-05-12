@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -85,6 +86,15 @@ public class BookService implements IBookService {
         int totalPage = (int) Math.ceil((double) listProducts.size() / size);
         int totalItem = listProducts.size();
         return new PagingModel<>(result, size, totalItem, page, totalPage);
+    }
+
+    @Override
+    public BookModel getBookByID(UUID id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (!book.isPresent()){
+            return null;
+        }
+        return BookMapping.toBook(book.get());
     }
 
     private void addImageBook(UUID bookId, List<MultipartFile> productImage) {
