@@ -1,42 +1,52 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './detailBook.css';
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
 const DetailBook=()=>{
-     const products = [
-        {
-            "_id": "1",
-            "title": "Số đỏ",
-            "src": ["https://307a0e78.vws.vegacdn.vn/view/v2/image/img.book/0/0/1/37100.jpg?v=1&w=340&h=497"],
-            "author": "Vũ Trọng Phụng",
-            "content": "Số đỏ là một tiểu thuyết văn học của nhà văn Vũ Trọng Phụng, đăng ở Hà Nội báo từ số 40 ngày 7 tháng 10 năm 1936 và được in thành sách lần đầu vào năm 1938. Nhiều nhân vật và câu nói trong tác phẩm đã đi vào cuộc sống đời thường và tác phẩm đã được dựng thành kịch, phim. Nhân vật chính của Số đỏ là Xuân - biệt danh là Xuân Tóc đỏ, từ chỗ là một kẻ bị coi là hạ lưu, bỗng nhảy lên tầng lớp danh giá của xã hội nhờ trào lưu Âu hóa của giới tiểu tư sản Hà Nội khi đó. Tác phẩm Số đỏ, cũng như các tác phẩm khác của Vũ Trọng Phụng đã từng bị cấm lưu hành tại Việt Nam Dân chủ Cộng hòa trước năm 1975 cũng như tại Việt Nam thống nhất từ năm 1975 cho đến năm 1986.",
+    const [books,setBooks]=useState([])
+    const [loading,setLoading]=useState(false)
+    console.log(books)
+    const API_URL = "http://localhost:7070/";
+    const  params= useParams()
+    const {id}=params
 
+    useEffect(()=>{
+        const getBook=async()=>{
+            try{
+                const res= await axios.get(`${API_URL}api/books/${id}`)
+                setBooks(res.data)
+                console.log(res.data)
+                setLoading(true)
+            }catch (err){
+                console.log(err)
+            }
         }
-    ]
+        getBook()
+
+    },[id])
+    if(!loading){
+        return <div>loading...</div>
+    }
     return(
         <div className="app">
-            {
-
-                products.map(item =>(
-
-                    <div className="details" key={item._id}>
+                    <div className="details" key={books.id}>
                         <div className="big-img">
-                            <img src={item.src} alt=""/>
+                            <img src={`${API_URL}${books.productImagesUrl[0]}`} alt=""/>
                         </div>
 
                         <div className="box">
                             <div className="row">
-                                <h2>{item.title}</h2>
+                                <h2>{books.name}</h2>
                             </div>
-                            <p>Tác giả: {item.author}</p>
-                            <p>{item.content}</p>
-
-
+                            <p>Tác giả: {books.author}</p>
+                            <p style={{
+                                minHeight: "180px",
+                            }}>{books.description}</p>
                             <button className="cart">Trao đổi</button>
 
                         </div>
                     </div>
-                ))
-            }
         </div>
     );
 

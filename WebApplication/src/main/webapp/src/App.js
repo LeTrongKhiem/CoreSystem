@@ -5,9 +5,8 @@ import "./assets/css/grid.css";
 import "./assets/css/index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {AddBookExchange, Home} from "./pages";
+import {AddBookExchange, DetailBook, Home} from "./pages";
 import {ToastContainer} from "react-toastify";
-import DetailBook from "./pages/DetailBook";
 function App() {
   return (
       <BrowserRouter>
