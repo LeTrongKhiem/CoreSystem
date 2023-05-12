@@ -5,8 +5,10 @@ import com.example.backendapi.ModelMapping.BookModel;
 import com.example.backendapi.ModelMapping.PagingModel;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IBookService {
     boolean postBook(BookModel book);
     PagingModel<BookModel> getAllBook(String keyword, int page, int size, String sortType, String sortBy, String mostRecent);
+    BookModel getBookByID(UUID id);
 }

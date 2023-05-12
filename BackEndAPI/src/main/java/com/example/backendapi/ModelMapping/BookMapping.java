@@ -2,6 +2,7 @@ package com.example.backendapi.ModelMapping;
 
 import com.example.backendapi.Model.Book;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class BookMapping {
         model.setProductImagesUrl(book.getBookImages().stream().map(x -> x.getImage()).toList());
         return model;
     }
+
 
     public static List<BookModel> toListBook(List<Book> models) {
         return models.stream().map(BookMapping::toBook).toList();
