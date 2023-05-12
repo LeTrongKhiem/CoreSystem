@@ -10,6 +10,7 @@ import com.example.backendapi.ModelMapping.BookModel;
 import com.example.backendapi.ModelMapping.PagingModel;
 import com.example.backendapi.Repository.BookImageRepository;
 import com.example.backendapi.Repository.BookRepository;
+import com.example.backendapi.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -31,10 +32,14 @@ public class BookService implements IBookService {
     private IFileStorageService fileStorageService;
     @Autowired
     private BookImageRepository bookImageRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public boolean postBook(BookModel bookModel) {
         Book book = new Book();
         UUID id = UUID.randomUUID();
+        UUID userIdPost = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var user = userRepository.findById(userIdPost);
         if (book != null) {
             book.setId(id);
             book.setCreatedDate(new Date(System.currentTimeMillis()));
@@ -43,6 +48,7 @@ public class BookService implements IBookService {
             book.setName(bookModel.getName());
             book.setContactPhone(bookModel.getContactPhone());
             book.setExchange(false);
+            book.setUser(user.get());
             bookRepository.save(book);
             if (bookModel.getProductImages() != null) {
                 addImageBook(id, bookModel.getProductImages());

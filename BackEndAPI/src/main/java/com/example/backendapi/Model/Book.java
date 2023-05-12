@@ -36,4 +36,7 @@ public class Book implements Serializable {
     private String contactPhone;
     @OneToMany(mappedBy = "book")
     private Set<BookImage> bookImages;
+    @OneToOne()
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
