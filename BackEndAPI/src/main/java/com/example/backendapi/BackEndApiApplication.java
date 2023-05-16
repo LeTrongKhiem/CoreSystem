@@ -2,6 +2,7 @@ package com.example.backendapi;
 
 import com.example.backendapi.Abstractions.IFileStorageService;
 import com.example.backendapi.Service.EmailService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,7 +28,7 @@ public class BackEndApiApplication {
         };
     }
     @EventListener(ApplicationReadyEvent.class)
-    public void triggerMail() {
+    public void triggerMail() throws MessagingException {
         senderService.sendSimpleEmail("trangphuonglam120@gmail.com",
                 "This is email body",
                 "This is email subject");
