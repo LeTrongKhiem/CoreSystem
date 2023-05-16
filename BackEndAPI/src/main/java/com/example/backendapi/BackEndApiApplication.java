@@ -22,7 +22,9 @@ public class BackEndApiApplication {
 
     @Bean
     CommandLineRunner init(IFileStorageService storageService) {
-        return (args) -> storageService.init();
+        return (args) -> {
+            storageService.init();
+        };
     }
     @EventListener(ApplicationReadyEvent.class)
     public void triggerMail() {
