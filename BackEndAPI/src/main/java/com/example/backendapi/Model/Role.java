@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-    @Table(name = "roles")
-    public class Role implements Serializable {
+@Table(name = "roles")
+public class Role implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
