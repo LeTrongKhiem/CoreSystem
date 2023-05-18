@@ -1,7 +1,9 @@
 package com.example.backendapi.SeedData;
 
 import com.example.backendapi.Model.Book;
+import com.example.backendapi.Model.Role;
 import com.example.backendapi.Model.User;
+import com.example.backendapi.Repository.RoleRepository;
 import com.example.backendapi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,10 +16,13 @@ import java.util.UUID;
 public class SeedUserDemo implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public void run(String... args) throws Exception {
         seedUser();
+        seedRole();
     }
 
     public void seedUser() {
@@ -31,6 +36,17 @@ public class SeedUserDemo implements CommandLineRunner {
             List<User> listUser = List.of(userPostBook, userexchanged);
             Book book = new Book();
             userRepository.saveAll(listUser);
+        }
+    }
+
+    public void seedRole() {
+        if (roleRepository.count() == 0) {
+            UUID id1 = UUID.fromString("00000000-0000-0000-0000-000000000001");
+            UUID id2 = UUID.fromString("00000000-0000-0000-0000-000000000002");
+            Role role1 = new Role(id1, "Admin", "Role Admin");
+            Role role2 = new Role(id2, "User", "Role User");
+            List<Role> listRole = List.of(role1, role2);
+            roleRepository.saveAll(listRole);
         }
     }
 }
