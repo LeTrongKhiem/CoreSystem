@@ -195,8 +195,8 @@ product-card:hover {
     margin-bottom: 20px;
 }
 
-.login,
-.logout,
+.btn-login,
+.btn-logout,
 .post {
     background-color: #007bff;
     color: #fff;
@@ -207,8 +207,8 @@ product-card:hover {
     cursor: pointer;
 }
 
-.login:hover,
-.logout:hover,
+.btn-login:hover,
+.btn-logout:hover,
 .post:hover {
     background-color: #0069d9;
 }
