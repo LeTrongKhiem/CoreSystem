@@ -4,12 +4,15 @@ import "./assets/css/grid.css";
 import "./assets/css/index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {AddBookExchange, DetailBook, Home, Login, Register} from "./pages";
+import {AddBookExchange, DetailBook, Home, Login, Register, VerificationPage} from "./pages";
 import {ToastContainer} from "react-toastify";
+import {Provider} from "react-redux";
+import {store} from "./redux/store";
 
 function App() {
-    return (
+    return (<Provider store={store}>
         <BrowserRouter>
+
             <div className="layout">
                 <div className="layout__content">
                     <div className="layout__content-main">
@@ -19,13 +22,15 @@ function App() {
                             <Route path="/detail-book/:id" element={<DetailBook/>}/>
                             <Route path="/login" element={<Login/>}/>
                             <Route path="/register" element={<Register/>}/>
+                            <Route path="/verify" element={<VerificationPage/>}/>
                         </Routes>
                     </div>
                 </div>
             </div>
             <ToastContainer/>
+
         </BrowserRouter>
-    );
+    </Provider>);
 }
 
 export default App;
