@@ -5,6 +5,7 @@ import com.example.backendapi.Abstractions.IFileStorageService;
 import com.example.backendapi.Extensions.FileUploadModelConverter;
 import com.example.backendapi.Model.Book;
 import com.example.backendapi.Model.PartFileModel;
+import com.example.backendapi.Model.User;
 import com.example.backendapi.ModelMapping.BookMapping;
 import com.example.backendapi.ModelMapping.BookModel;
 import com.example.backendapi.ModelMapping.PagingModel;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -31,7 +33,8 @@ public class BookController {
 
     @PostMapping("/post")
     public ResponseEntity<Boolean> post(@ModelAttribute BookModel book) {
-        boolean result = bookService.postBook(book);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean result = bookService.postBook(user.getId(), book);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
