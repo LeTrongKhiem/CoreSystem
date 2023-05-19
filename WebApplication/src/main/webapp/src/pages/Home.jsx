@@ -3,8 +3,8 @@ import BookList from "../components/BookList";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {selectIsLoggedIn} from "../redux/slice/authSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {logoutSuccess, selectIsLoggedIn} from "../redux/slice/authSlice";
 import {toast} from "react-toastify";
 
 const Home = () => {
@@ -18,7 +18,9 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [pageSizes, setPageSizes] = useState(3);
     const isLoggin = useSelector(selectIsLoggedIn);
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getBooks = async () => {
@@ -47,17 +49,28 @@ const Home = () => {
         setCurrentPage(page); //trừ 1 vì page bắt đầu từ 0
     }, []);
     const goToPostBook = () => {
-        if (isLoggin) {
+        if (isLoggedIn) {
             navigate('/post-book')
         } else {
             toast.error('Vui lòng đăng nhập để thực hiện chức năng này');
             navigate('/login')
         }
     }
+    const login = () => {
+        navigate('/login');
+    }
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('isLoggedIn');
+        dispatch(logoutSuccess());
+        toast.success('Đăng xuất thành công');
+        navigate('/');
+    }
     return (
         <div className="home">
             <div className="buttons">
-                {isLoggin ? (   <button className="logout">Đăng xuất</button>) : (  <button className="login">Đăng nhập</button>)}
+                {isLoggedIn ? (<button className="btn-logout" onClick={logout}>Đăng xuất</button>) : (
+                    <button className="btn-login" onClick={login}>Đăng nhập</button>)}
 
                 <button className="post" onClick={goToPostBook}>Đăng sách</button>
             </div>

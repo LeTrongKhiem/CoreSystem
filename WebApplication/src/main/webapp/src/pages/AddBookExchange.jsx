@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import React, {useState, useEffect} from "react";
 import {FastField, Form, Formik} from "formik";
@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import axios from "axios";
 
 const AddBookExchange = () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const initialValues = {
         name: '',
         author: '',
@@ -23,7 +24,10 @@ const AddBookExchange = () => {
         productImages: Yup.mixed().required('Vui lòng chọn hình ảnh'),
         description: Yup.string().required('Vui lòng nhập mô tả'),
     });
-
+    if(!isLoggedIn) {
+        toast.error('Vui lòng đăng nhập để thực hiện chức năng này');
+        return <Navigate to="/login" replace />;
+    }
 
 
     const saveBookExchange = async (values) => {

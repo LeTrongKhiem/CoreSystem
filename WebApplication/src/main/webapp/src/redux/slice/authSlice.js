@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 
 const initialState = {
     token: null,
-    email: null,
     isLoggedIn: false,
     role: null,
 };
