@@ -29,7 +29,6 @@ const Login = () => {
                     console.log(res);
                     toast.success("Đăng nhập thành công");
                     localStorage.setItem("token", res.data);
-                    // localStorage.setItem("isLogin", "true")
                     dispatch(loginSuccess(res.data));
                     navigate("/");
                 }

@@ -27,6 +27,7 @@ const AddBookExchange = () => {
 
 
     const saveBookExchange = async (values) => {
+        const token = localStorage.getItem('token');
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('author', values.author);
@@ -37,8 +38,10 @@ const AddBookExchange = () => {
         formData.append('description', values.description);
        const response = await  axios.post('http://localhost:7070/api/books/post', formData,{
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
             }
+
        });
          if (response.status === 200) {
                 toast.success('Thêm sách thành công');

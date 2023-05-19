@@ -19,12 +19,14 @@ const authSlice = createSlice({
             state.role = role;
             state.isLoggedIn = true;
             state.token = token;
+            localStorage.setItem("isLoggedIn", "true");
         },
         logoutSuccess: (state) => {
             state.token = null;
             state.email = null;
             state.role = null;
             state.isLoggedIn = false;
+            localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("token");
         }
     },

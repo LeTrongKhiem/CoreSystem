@@ -56,10 +56,10 @@ const Home = () => {
     }
     return (
         <div className="home">
-            <div className="add-book">
+            <div className="buttons">
+                {isLoggin ? (   <button className="logout">Đăng xuất</button>) : (  <button className="login">Đăng nhập</button>)}
 
-                <button className="btn btn-primary" onClick={goToPostBook}>Thêm sách</button>
-
+                <button className="post" onClick={goToPostBook}>Đăng sách</button>
             </div>
             <Search searchTerm={searchTerm} handleSearch={handleSearch}/>
             <BookList books={books} currentPage={currentPage} totalPages={totalPages} onChangePage={handlePageChange}/>
