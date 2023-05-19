@@ -1,6 +1,7 @@
 package com.example.backendapi.Controller;
 
 import com.example.backendapi.Model.AppSettings;
+import com.example.backendapi.Model.AuthenticationRequest;
 import com.example.backendapi.Model.RegisterRequest;
 import com.example.backendapi.Repository.UserRepository;
 import com.example.backendapi.Service.AuthenticationService;
@@ -9,8 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,6 +54,18 @@ public class AuthenticationController {
             return "Verification successful";
         } else {
             return "Verification failed";
+        }
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<String> authenticate(@RequestBody @Valid AuthenticationRequest request, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
+        try {
+            var result = authenticationService.authenticate(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(new String());
         }
     }
 }
