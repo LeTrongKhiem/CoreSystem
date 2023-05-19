@@ -36,11 +36,10 @@ public class BookService implements IBookService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public boolean postBook(BookModel bookModel) {
+    public boolean postBook(UUID userId, BookModel bookModel) {
         Book book = new Book();
         UUID id = UUID.randomUUID();
-        UUID userIdPost = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        var user = userRepository.findById(userIdPost);
+        var user = userRepository.findById(userId);
         if (book != null) {
             book.setId(id);
             book.setCreatedDate(new Date(System.currentTimeMillis()));
