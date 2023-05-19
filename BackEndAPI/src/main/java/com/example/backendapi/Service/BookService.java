@@ -1,16 +1,20 @@
 package com.example.backendapi.Service;
 
 import com.example.backendapi.Abstractions.IBookService;
+import com.example.backendapi.Abstractions.IEmailService;
 import com.example.backendapi.Abstractions.IFileStorageService;
 import com.example.backendapi.Model.Book;
 import com.example.backendapi.Model.BookImage;
 import com.example.backendapi.Model.PartFileModel;
+import com.example.backendapi.Model.User;
 import com.example.backendapi.ModelMapping.BookMapping;
 import com.example.backendapi.ModelMapping.BookModel;
+import com.example.backendapi.ModelMapping.ExchangedBookModel;
 import com.example.backendapi.ModelMapping.PagingModel;
 import com.example.backendapi.Repository.BookImageRepository;
 import com.example.backendapi.Repository.BookRepository;
 import com.example.backendapi.Repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +40,8 @@ public class BookService implements IBookService {
     private BookImageRepository bookImageRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IEmailService emailService;
     @Override
     public boolean postBook(UUID userId, BookModel bookModel) {
         Book book = new Book();
@@ -94,6 +101,25 @@ public class BookService implements IBookService {
             return null;
         }
         return BookMapping.toBook(book.get());
+    }
+
+    @Override
+    public String exchangedBook(UUID bookId, User user) {
+        Optional<Book> book = bookRepository.findById(bookId);
+        ExchangedBookModel exchangedBookModel = new ExchangedBookModel();
+        exchangedBookModel.setNameBook(book.get().getName());
+        exchangedBookModel.setNameEmailRequest(user.getEmail());
+        exchangedBookModel.setPhoneNumber(user.getPhoneNumber());
+        User userBook = book.get().getUser();
+        exchangedBookModel.setEmailUserCreated(userBook.getEmail());
+        exchangedBookModel.setNameUserCreated(userBook.getFirstName() + " " + userBook.getLastName());
+        exchangedBookModel.setNameUserRequest(user.getFirstName() + " " + user.getLastName());
+        try {
+            emailService.sendMailVerification(exchangedBookModel);
+            return "Send email success";
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void addImageBook(UUID bookId, List<MultipartFile> productImage) {

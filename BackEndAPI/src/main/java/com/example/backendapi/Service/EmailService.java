@@ -4,6 +4,7 @@ import com.example.backendapi.Abstractions.IEmailService;
 import com.example.backendapi.Model.AppSettings;
 import com.example.backendapi.Model.User;
 import com.example.backendapi.Model.VerificationToken;
+import com.example.backendapi.ModelMapping.ExchangedBookModel;
 import com.example.backendapi.Repository.VerificationTokenRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -46,6 +47,35 @@ public class EmailService implements IEmailService {
         String verifyURL = siteURL + "verify?code=" + token.getToken();
 
         content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendMailVerification(ExchangedBookModel model) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = model.getEmailUserCreated();
+        String fromAddress = appSettings.getEmail();
+        String subject = "Vui long xac nhan trao doi sach";
+        String content = "Xin chao [[name]],<br>"
+                + "Ten sach duoc yeu cau trao doi : [[book]]<br>"
+                + "Day la thong tin cua nguoi can trao doi sach: <br>"
+                + "Ten nguoi yeu cau: [[nameRequest]] <br>"
+                + "Email nguoi yeu cau: [[emailRequest]] <br>"
+                + "Dien thoai nguoi yeu cau: [[phoneRequest]] <br>";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", model.getNameUserCreated());
+        content = content.replace("[[book]]", model.getNameBook());
+        content = content.replace("[[nameRequest]]", model.getNameUserRequest());
+        content = content.replace("[[emailRequest]]", model.getNameEmailRequest());
+        content = content.replace("[[phoneRequest]]", model.getPhoneNumber());
 
         helper.setText(content, true);
 
