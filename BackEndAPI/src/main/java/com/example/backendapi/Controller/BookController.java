@@ -56,4 +56,10 @@ public class BookController {
     public BookModel getBookByID(@PathVariable UUID id){
         return bookService.getBookByID(id);
     }
+
+    @GetMapping("/exchangedBook/{bookId}")
+    public String exchangedBook(@PathVariable UUID bookId){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return bookService.exchangedBook(bookId, user);
+    }
 }
