@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import net.bytebuddy.utility.RandomString;
@@ -78,5 +79,20 @@ public class AuthenticationService {
         user.setEmailVerified(true);
         userRepository.save(user);
         return true;
+    }
+
+    public String authenticate(AuthenticationRequest request) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid username or password");
+        }
+        var user = userRepository.findByEmail(request.getEmail());
+        if (!user.isEmailVerified()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled");
+        }
+        if (user.isBlock())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is blocked");
+        return jwtService.generateToken(user);
     }
 }
