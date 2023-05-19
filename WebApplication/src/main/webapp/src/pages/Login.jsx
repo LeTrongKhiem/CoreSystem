@@ -28,7 +28,8 @@ const Login = () => {
             .then(res => {
                     console.log(res);
                     toast.success("Đăng nhập thành công");
-                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("token", res.data);
+                    // localStorage.setItem("isLogin", "true")
                     dispatch(loginSuccess(res.data));
                     navigate("/");
                 }
